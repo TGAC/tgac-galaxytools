@@ -1,0 +1,4 @@
+categories: [Computational chemistry]
+description: This tool generates table which can be used in edgeR.
+name: countmatrixforedger
+owner: earlhaminst
