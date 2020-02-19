@@ -1,16 +1,19 @@
-<tool id="MultiPEN-enrichment-GO" name="Enrichment with GO" version="0.0.3">
-    <description> (enrichment with Gene Ontology)</description>
+<tool id="enrich_go" name="enrich go" version="0.0.3">
+    <description> over-representation and GSE analysis with Gene Ontology</description>
     <requirements>
-        <requirement type="package" version="0.0.3">MultiPEN</requirement>
+        <requirement type="package" version="3.0.5">bioconductor-clusterProfiler</requirement>
+        <requirement type="package" version="1.9">r-BBmisc</requirement>
+        <requirement type="package" version="3.3.0">bioconductor-GO.db</requirement>
+        <requirement type="package" version="3.3.0">bioconductor-org.Hs.eg.db</requirement>
     </requirements>
     <stdio>
         <exit_code range="1:" level="fatal" />
     </stdio>
     <command><![CDATA[
-run_MultiPEN_slurm.sh EnrichmentGO ./ '$rankings'
+        Rscript '$__tool_directory__'/enrichmentGO.R '$rankings'
     ]]></command>
     <inputs>
-        <param name="rankings" type="data" format="tabular" label="Rankings for all features" help="Ranking of features (genes and/or metabolites). The rankings must be specified in a tab delimited text file with (at least) three columns: 'name' (use symbol names for genes or chEBI IDs for metabolites), 'value' (used to rank the features) and 'ranking' (ranking 1 represent the most important feature)." />
+        <param name="rankings" type="data" format="tabular" label="Rankings for all features" help="Ranking of genes which must be specified in a tab delimited text file with (at least) three columns: 'name' (this is the gene names), 'value' (used to rank the genes) and 'ranking' (where ranking 1 represent the most important feature)." />
     </inputs>
     <outputs>
         <data name="enrichment-GO" format="txt" label="${tool.name}: over-representation analysis with Gene Ontology" from_work_dir="enrichment-GO.txt" />
@@ -30,9 +33,12 @@ run_MultiPEN_slurm.sh EnrichmentGO ./ '$rankings'
         </test>
     </tests>
     <help><![CDATA[
-MultiPEN includes a Wrapper to use the R package clusterProfiler to perform over-representation analysis with Gene Ontology.
+        This wrapper performs over-representation and gene set enrichment analysis from a list of genes using the Bioconductor package clusterProfiler and Gene Ontology.
     ]]></help>
     <citations>
         <citation type="doi">10.1089/omi.2011.0118</citation>
+        <citation type="doi">10.1038/75556</citation>
+        <citation type="doi">10.1093/nar/gku1179</citation>
+        
     </citations>
 </tool>

@@ -1,0 +1,40 @@
+<tool id="enrich_kegg" name="enrich kegg" version="0.0.3">
+    <description> over-representation and GSE analysis with KEGG</description>
+    <requirements>
+        <requirement type="package" version="3.3.1">r</requirement>
+        <requirement type="package" version="3.0.5">bioconductor-clusterProfiler</requirement>
+        <requirement type="package" version="1.10">r-BBmisc</requirement>
+        <requirement type="package" version="3.3.0">bioconductor-org.Hs.eg.db</requirement>
+    </requirements>
+    <stdio>
+        <exit_code range="1:" level="fatal" />
+    </stdio>
+    <command><![CDATA[
+        Rscript '$__tool_directory__'/enrichmentKEGG.R '$rankings'
+    ]]></command>
+    <inputs>
+        <param name="rankings" type="data" format="tabular" label="Rankings for all features" help="Ranking of genes which should be specified in a tabular delimited text file with (at least) three columns: 'name' (this are gene names), 'value' (used to rank the genes) and 'ranking' (where ranking 1 represent the most important feature)" />
+    </inputs>
+    <outputs>
+        <data name="enrichment-KEGG" format="txt" label="${tool.name}: over-representation analysis with KEGG" from_work_dir="enrichment-KEGG.txt" />
+        <data name="enrichment-KEGG" format="pdf" label="${tool.name}: over-representation analysis with KEGG" from_work_dir="enrichment-KEGG_BP.pdf" />
+        <data name="gse-KEGG" format="txt" label="Gene set enrichment analysis with KEGG" from_work_dir="gse-KEGG.txt" />
+    </outputs>
+    <tests>
+        <test>
+            <param name="rankings" ftype="tabular" value="MultiPEN-Rankings_lambda0.0001.txt" />
+            <output name="enrichment-KEGG" file="enrichment-KEGG" ftype="txt" />
+            <output name="enrichment-KEGG" file="enrichment-KEGG_BP" ftype="pdf" />
+            <output name="gse-KEGG" file="gse-KEGG" ftype="pdf" />
+        </test>
+    </tests>
+    <help><![CDATA[
+        This wrapper performs over-representation and gene set enrichment analysis from a list of genes using the bioconductor R package clusterProfiler and KEGG.
+    ]]></help>
+    <citations>
+        <citation type="doi">10.1089/omi.2011.0118</citation>
+        <citation type="doi">10.1093/nar/gkw1092</citation>
+        <citation type="doi">10.1093/nar/gkv1070</citation>
+        <citation type="doi">10.1093/nar/28.1.27</citation>
+    </citations>
+</tool>
